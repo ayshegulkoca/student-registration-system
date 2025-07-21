@@ -152,11 +152,137 @@ def Save():
 
 
 
+###############Search##############
+def search():
+
+    text = Search.get()
+
+    Clear()
+    saveButton.config(state='disable')
+
+    file=openpyxl.load_workbook("Student_data.xlsx")
+    sheet=file.active
+
+    for row in sheet.rows:
+        if row[0].value == int(text):
+            name=row[0]
+            ##print(str(name))
+            reg_no_position=str(name)[14:-1]
+            reg_number=str(name)[15:-1]
+         # print(reg_no_position)
+          #print(reg_number)
+   
+    try:
+     print(str(name))
+    except:
+     messagebox.showerror("Invalid","Invalid registration number!")
 
 
 
+    x1=sheet.cell(row=int(reg_number),column=1).value
+    x2=sheet.cell(row=int(reg_number),column=2).value
+    x3=sheet.cell(row=int(reg_number),column=3).value
+    x4=sheet.cell(row=int(reg_number),column=4).value
+    x5=sheet.cell(row=int(reg_number),column=5).value
+    x6=sheet.cell(row=int(reg_number),column=6).value
+    x7=sheet.cell(row=int(reg_number),column=7).value
+    x8=sheet.cell(row=int(reg_number),column=8).value
+    x9=sheet.cell(row=int(reg_number),column=9).value
+    x10=sheet.cell(row=int(reg_number),column=10).value
+    x11=sheet.cell(row=int(reg_number),column=11).value
+    x12=sheet.cell(row=int(reg_number),column=12).value
+    
 
+    #print(x1)
+    #print(x2)
+    #print(x3)
+    #print(x4)
+    #print(x5)
+    #print(x6)
+    #print(x7)
+    #print(x8)
+    #print(x9)
+    #print(x10)
+    #print(x11)
+    #print(x12)
 
+    Registration.set(x1)
+    Name.set(x2)
+    Class.set(x3)
+
+    if x4=='Female':
+        R2.select()
+    else:
+        R1.select()
+
+    DOB.set(x5)
+    Date.set(x6)
+    Religion.set(x7)
+    Skill.set(x8)
+    F_Name.set(x9)
+    M_Name.set(x10)
+    Father_Occupation.set(x11)
+    Mother_Occupation.set(x12)
+
+    img = (Image.open("Student's Images/"+str(x1)+".jpg"))
+    resized_image=img.resize((190,190))
+    photo2 = ImageTk.PhotoImage(resized_image)
+    lbl.config(image=photo2)
+    lbl.image+photo2
+
+###########Update############
+def Update():
+    R1=Registration.get()
+    N1=Name.get()
+    C1=Class.get()
+    selection()
+    G1=gender
+    D2=DOB.get()
+    D1=Date.get()
+    Re1=Religion.get()
+    S1=Skill.get()
+    fathername=F_Name.get()
+    mothername=M_Name.get()
+    F1=Father_Occupation.get()
+    M1=Mother_Occupation.get()
+
+    file=openpyxl.load_workbook("Student_data.xlsx")
+    sheet=file.active
+
+    for row in sheet.rows:
+        if row[0].value == R1:
+            name=row[0]
+            print(str(name))
+            reg_no_position=str(name)[14:-1]
+            reg_number=str(name)[15:-1]
+
+            print(reg_number)
+
+    #sheet.cell(column=1,row=int(reg_number),value=R1)
+    sheet.cell(column=2,row=int(reg_number),value=N1)
+    sheet.cell(column=3,row=int(reg_number),value=C1)
+    sheet.cell(column=4,row=int(reg_number),value=G1)
+    sheet.cell(column=5,row=int(reg_number),value=D2)
+    sheet.cell(column=6,row=int(reg_number),value=D1)
+    sheet.cell(column=7,row=int(reg_number),value=Re1)
+    sheet.cell(column=8,row=int(reg_number),value=S1)
+    sheet.cell(column=9,row=int(reg_number),value=fathername)
+    sheet.cell(column=10,row=int(reg_number),value=mothername)
+    sheet.cell(column=11,row=int(reg_number),value=F1)
+    sheet.cell(column=12,row=int(reg_number),value=M1)
+
+    file.save(r'Student_data.xlsx')
+
+    try:
+        img.save("Student's Images/"+str(R1)+".jpg")
+        
+    except:
+        pass
+    messagebox.showinfo("Update","Update Successfully!")
+
+    Clear()
+
+    
 
 
 # Gender selection
@@ -180,11 +306,11 @@ Label(root, text="STUDENT REGISTRATION", width=10, height=2, bg="#c36464", fg='#
 Search = StringVar()
 Entry(root, textvariable=Search, width=15, bd=2, font="arial 20").place(x=820, y=70)
 imageicon3 = PhotoImage(file="Images/search.png")
-Srch = Button(root, text="Search", compound=LEFT, image=imageicon3, width=123, bg='#68ddfa', font="arial 13 bold")
+Srch = Button(root, text="Search", compound=LEFT, image=imageicon3, width=123, bg='#68ddfa', font="arial 13 bold", command=search)
 Srch.place(x=1060, y=66)
 
 imageicon4 = PhotoImage(file="Images/Layer 4.png")
-Update_button = Button(root, image=imageicon4, bg="#c36464")
+Update_button = Button(root, image=imageicon4, bg="#c36464", command=Update)
 Update_button.place(x=110, y=64)
 
 
